@@ -1,8 +1,8 @@
 <?php
 
-namespace Transprime\Package\Exceptions;
+namespace Transprime\Chained\Exceptions;
 
-class PackageException extends \Exception
+class ChainedException extends \Exception
 {
 
 }

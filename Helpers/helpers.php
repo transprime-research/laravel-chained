@@ -1,14 +1,15 @@
 <?php
 
-use Transprime\Package\Package;
+use Transprime\Chained\Chained;
 
-if (! function_exists('package')) {
+if (! function_exists('chained')) {
     /**
-     * New up a Package
+     * New up a fresh Chained
      *
-     * @return Package
+     * @param $data
+     * @return Chained
      */
-    function package() {
-        return new Package();
+    function chained($data) {
+        return new Chained($data);
     }
 }

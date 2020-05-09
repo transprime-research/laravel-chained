@@ -1,14 +1,14 @@
 <?php
 
-namespace Transprime\Package\Tests;
+namespace Transprime\Chained\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Transprime\Package\{Package, Exceptions\PackageException};
+use Transprime\Chained\{Chained, Exceptions\ChainedException};
 
-class PackageTest extends TestCase
+class ChainedTest extends TestCase
 {
-    public function testPackageIsCreated()
+    public function testChainedIsCreated()
     {
-        $this->assertIsObject(new Package());
+        $this->assertIsObject(new Chained([]));
     }
 }

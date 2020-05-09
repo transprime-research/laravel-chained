@@ -1,10 +1,10 @@
 <?php
 
-namespace Transprime\Package;
+namespace Transprime\Chained;
 
-use Transprime\Package\Exceptions\PackageException;
+use Transprime\Chained\Exceptions\ChainedException;
 
-class Package
+class Chained
 {
 
 }

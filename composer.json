@@ -1,16 +1,18 @@
 {
-  "name": "transprime-research/package-name",
-  "description": "PHP package-name",
+  "name": "transprime-research/laravel-chained",
+  "description": "PHP Laravel-Chained",
   "license": "MIT",
   "keywords": [
     "php",
     "Helpers",
+    "Laravel-Chained",
+    "Piping",
     "Laravel"
   ],
-  "homepage": "https://transprime-research.github.io/package-name/",
+  "homepage": "https://transprime-research.github.io/laravel-chained/",
   "support": {
-    "issues": "https://github.com/transprime-research/package-name/issues",
-    "source": "https://github.com/transprime-research/package-name/issues"
+    "issues": "https://github.com/transprime-research/laravel-chained/issues",
+    "source": "https://github.com/transprime-research/laravel-chained/issues"
   },
   "authors": [
     {
@@ -19,14 +21,14 @@
     }
   ],
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.2"
   },
   "require-dev": {
     "phpunit/phpunit": "~8.0"
   },
   "autoload": {
     "psr-4": {
-      "Transprime\\Package\\": "src"
+      "Transprime\\Chained\\": "src"
     },
     "files": [
       "Helpers/helpers.php"
@@ -34,7 +36,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Transprime\\Package\\Tests\\": "tests/"
+      "Transprime\\Chained\\Tests\\": "tests/"
     }
   }
 }
