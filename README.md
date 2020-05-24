@@ -24,33 +24,38 @@ Laravel chained help to chain method calls on any class.
 Say we have this class with a lot of static methods. Instead of:
 
 ```php
-
+$value = Str::lower('ChainedOnStr');
+$value = Str::snake($value);
+$value = Str::before($value, '_');
+$value = Str::length($value); //7
 ```
 
 You use:
 
 ```php
-chained('ChainedOnStr')
+$value = chained('ChainedOnStr')
     ->on(Str::class)
     ->to('lower')
     ->to('snake')
+    ->to('before', '_')
     ->to('length')(); //14
 ```
 Or Aliased method calls:
 
 ```php
-chained('ChainedOnStr')
+$value = chained('ChainedOnStr')
     ->on(Str::class)
     ->lower()
     ->snake()
-    ->length()(); //14
+    ->before('_')
+    ->length()(); //7
 ```
 ## Other Usages
 
 ### tap() method
 
 ```php
-chained('ChainedOnStr')
+$value = chained('ChainedOnStr')
     ->on(Str::class)
     ->tap(function ($res) {
         var_dump($res);
@@ -68,7 +73,7 @@ chained('ChainedOnStr')
 ```php
 use Transprime\Chained\Chained;
 
-chained('ChainedOnStr')
+$value = chained('ChainedOnStr')
     ->on(Str::class, function (Chained $chain) {
 
         return $chain->to('lower')->to('snake');
