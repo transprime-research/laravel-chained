@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-<a href="https://travis-ci.com/transprime-research/laravel-chained"> <img src="https://travis-ci.org/transprime-research/laravel-chained.svg?branch=master" alt="Build Status"/></a>
+<a href="https://travis-ci.org/transprime-research/laravel-chained"> <img src="https://travis-ci.org/transprime-research/laravel-chained.svg?branch=master" alt="Build Status"/></a>
 <a href="https://packagist.org/packages/transprime-research/laravel-chained"> <img src="https://poser.pugx.org/transprime-research/laravel-chained/v/stable" alt="Latest Stable Version"/></a>
 <a href="https://packagist.org/packages/transprime-research/laravel-chained"> <img src="https://poser.pugx.org/transprime-research/laravel-chained/downloads" alt="Total Downloads"/></a>
 <a href="https://packagist.org/packages/transprime-research/laravel-chained"> <img src="https://poser.pugx.org/transprime-research/laravel-chained/v/unstable" alt="Latest Unstable Version"/></a>
@@ -11,9 +11,9 @@
   <a href="https://packagist.org/packages/transprime-research/laravel-chained"> <img src="https://poser.pugx.org/transprime-research/laravel-chained/license" alt="License"/></a>
 </p>
 
-## About Laravel-Chained
+## About Laravel-chained
 
-This works this way
+Laravel chained help to chain method calls on any class.
 > Do it Like a PRO :ok:
 
 ## Installation
