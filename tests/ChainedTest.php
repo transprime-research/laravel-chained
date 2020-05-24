@@ -59,16 +59,13 @@ class ChainedTest extends TestCase
             chained('a,b,c,d')
                 ->on(Stringer::class)
                 ->tap(function ($res) {
-                    var_dump($res);
+                    $this->assertEquals('a,b,c,d', $res);
                 })
                 ->to('split')
                 ->tap(function ($res) {
-                    var_dump($res);
+                    $this->assertEquals(['a','b','c','d'], $res);
                 })
                 ->to('combine', '|')
-                ->tap(function ($res) {
-                    var_dump($res);
-                })
                 ->up()
         );
 
