@@ -51,6 +51,36 @@ class ChainedTest extends TestCase
                 ->up()
         );
     }
+
+    public function testExtraParametersOnMethods()
+    {
+        $this->assertEquals(
+            'a|b|c|d',
+            chained('a,b,c,d')
+                ->on(Stringer::class)
+                ->tap(function ($res) {
+                    var_dump($res);
+                })
+                ->to('split')
+                ->tap(function ($res) {
+                    var_dump($res);
+                })
+                ->to('combine', '|')
+                ->tap(function ($res) {
+                    var_dump($res);
+                })
+                ->up()
+        );
+
+        $this->assertEquals(
+            'a|b|c|d',
+            chained('a,b,c,d')
+                ->on(Stringer::class)
+                ->split()
+                ->combine('|')
+                ->up()
+        );
+    }
 }
 
 class Stringer

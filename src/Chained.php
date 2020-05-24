@@ -2,6 +2,7 @@
 
 namespace Transprime\Chained;
 
+use Closure;
 use Transprime\Chained\Exceptions\ChainedException;
 
 class Chained
@@ -10,7 +11,7 @@ class Chained
 
     private $on;
     private $chain = [];
-    private $extraParameters = [];
+    private $arguments = [];
     private $data;
 
     public function __construct($data)
@@ -20,14 +21,14 @@ class Chained
 
     public function on($on)
     {
-       return $this->buildOn($on);
+        return $this->buildOn($on);
     }
 
     public function to(string $function, ...$extraParameters)
     {
         $this->chain[] = $function;
 
-        empty($extraParameters) ?: $this->extraParameters[count($this->chain) - 1] = $extraParameters;
+        $this->arguments[] = $extraParameters;
 
         return $this;
     }
@@ -35,7 +36,13 @@ class Chained
     public function up()
     {
         return array_reduce($this->chain, function ($result, $function) {
-            return $this->on->$function($result);
+            if ($function === 'tap') {
+                array_shift($this->arguments)[0]($result);
+
+                return $result;
+            }
+
+            return $this->on->$function($result, ...array_shift($this->arguments));
         }, $this->data);
     }
 
@@ -43,7 +50,7 @@ class Chained
     {
         if (function_exists('app')) {
 
-            $this->on = app($on, $arguments);
+            $this->on = app($on, ...$arguments);
 
             return $this;
         }
@@ -51,5 +58,10 @@ class Chained
         $this->on = new $on(...$arguments);
 
         return $this;
+    }
+
+    public function tap(Closure $tap)
+    {
+        return $this->to(__FUNCTION__, $tap);
     }
 }
