@@ -38,6 +38,19 @@ class ChainedTest extends TestCase
                 ->up()
         );
     }
+
+    public function testProxiedCalls()
+    {
+        $this->assertEquals(
+            ['a', 'b', 'c', 'd'],
+            chained('a,b,c,d')
+                ->on(Stringer::class)
+                ->wrap()
+                ->combine()
+                ->split()
+                ->up()
+        );
+    }
 }
 
 class Stringer

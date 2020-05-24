@@ -6,6 +6,8 @@ use Transprime\Chained\Exceptions\ChainedException;
 
 class Chained
 {
+    use ChainedImpl;
+
     private $on;
     private $chain = [];
     private $extraParameters = [];
