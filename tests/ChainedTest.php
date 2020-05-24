@@ -32,9 +32,9 @@ class ChainedTest extends TestCase
             ['a', 'b', 'c', 'd'],
             chained('a,b,c,d')
                 ->on(Stringer::class)
+                ->to('wrap')
                 ->to('split')
                 ->to('combine')
-                ->to('wrap')
                 ->up()
         );
     }

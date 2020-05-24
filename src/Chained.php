@@ -33,9 +33,7 @@ class Chained
     public function up()
     {
         return array_reduce($this->chain, function ($result, $function) {
-            $result = $this->on->$function($result);
-
-            return $result;
+            return $this->on->$function($result);
         }, $this->data);
     }
 
