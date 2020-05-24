@@ -90,6 +90,17 @@ class ChainedTest extends TestCase
                 ->to('split')()
         );
     }
+
+    public function testChainLikePiper()
+    {
+
+        $this->assertEquals(
+            'b,c,d',
+            chained(['a', 'b', 'c', 'd'])
+                ->to('array_slice', 1)
+                ->to('implode', ',')()
+        );
+    }
 }
 
 class Stringer

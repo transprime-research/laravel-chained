@@ -29,6 +29,11 @@ class Chained
         return $this->buildOn($on);
     }
 
+    /**
+     * @param callable|string $function
+     * @param mixed ...$extraParameters
+     * @return $this
+     */
     public function to(string $function, ...$extraParameters)
     {
         $this->chain[] = $function;
@@ -47,7 +52,9 @@ class Chained
                 return $result;
             }
 
-            return $this->on->$function($result, ...array_shift($this->arguments));
+            return $this->on ?
+                $this->on->$function($result, ...array_shift($this->arguments))
+                : $function($result, ...array_shift($this->arguments));
         }, $this->data);
     }
 
