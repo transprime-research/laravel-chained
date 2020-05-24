@@ -6,7 +6,7 @@
     "php",
     "Helpers",
     "Laravel-Chained",
-    "Piping",
+    "OOP",
     "Laravel"
   ],
   "homepage": "https://transprime-research.github.io/laravel-chained/",
