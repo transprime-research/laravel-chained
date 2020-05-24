@@ -78,6 +78,18 @@ class ChainedTest extends TestCase
                 ->up()
         );
     }
+
+    public function testChainedCanBeInvoked()
+    {
+        $this->assertEquals(
+            ['a', 'b', 'c', 'd'],
+            chained('a,b,c,d')
+                ->on(Stringer::class)
+                ->to('wrap')
+                ->to('combine')
+                ->to('split')()
+        );
+    }
 }
 
 class Stringer

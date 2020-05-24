@@ -19,6 +19,11 @@ class Chained
         $this->data = $data;
     }
 
+    public function __invoke()
+    {
+        return $this->up();
+    }
+
     public function on($on)
     {
         return $this->buildOn($on);
