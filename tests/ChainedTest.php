@@ -95,10 +95,10 @@ class ChainedTest extends TestCase
     {
 
         $this->assertEquals(
-            'b,c,d',
+            'bcd',
             chained(['a', 'b', 'c', 'd'])
                 ->to('array_slice', 1)
-                ->to('implode', ',')()
+                ->to('implode')()
         );
     }
 }
