@@ -3,6 +3,8 @@
 namespace Transprime\Chained;
 
 use Closure;
+use Exception;
+use phpDocumentor\Reflection\Types\This;
 use Transprime\Chained\Exceptions\ChainedException;
 
 class Chained
@@ -12,11 +14,14 @@ class Chained
     private $on;
     private $chain = [];
     private $arguments = [];
-    private $data;
 
-    public function __construct($data)
+    public function __construct($class = null, ...$arguments)
     {
-        $this->data = $data;
+        if (null !== $class && !is_string($class) && !is_callable($class)) {
+            throw new Exception('class must be callable');
+        }
+
+        $this->buildOn($class,...$arguments);
     }
 
     public function __invoke()
@@ -24,9 +29,9 @@ class Chained
         return $this->up();
     }
 
-    public function on($on)
+    public static function on($on, ...$arguments)
     {
-        return $this->buildOn($on);
+        return new static($on, ...$arguments);
     }
 
     /**
@@ -45,21 +50,43 @@ class Chained
 
     public function up()
     {
-        return array_reduce($this->chain, function ($result, $function) {
+        return array_reduce($this->chain, $this->resolveChains());
+    }
+
+    private function resolveChains(): Closure
+    {
+        return function ($result, $function) {
             if ($function === 'tap') {
                 array_shift($this->arguments)[0]($result);
 
                 return $result;
             }
 
-            return $this->on ?
-                $this->on->$function($result, ...array_shift($this->arguments))
-                : $function($result, ...array_shift($this->arguments));
-        }, $this->data);
+
+            if ($this->on && $result) {
+                return $this->on->$function($result, ...array_shift($this->arguments));
+            } elseif ($this->on && !$result) {
+                return $this->on->$function(...array_shift($this->arguments));
+            }
+
+            if ($result) {
+                return $function($result, ...array_shift($this->arguments));
+            }
+
+            return $function(...array_shift($this->arguments));
+        };
     }
 
-    private function buildOn($on, ...$arguments)
+    private function buildOn($on = null, ...$arguments)
     {
+        if ($this->on) {
+            throw new Exception('buildOn() is already called');
+        }
+
+        if (!$on) {
+            return $this;
+        }
+
         if (function_exists('app')) {
 
             $this->on = app($on, ...$arguments);
