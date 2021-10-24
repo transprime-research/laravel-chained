@@ -6,10 +6,13 @@ if (! function_exists('chained')) {
     /**
      * New up a fresh Chained
      *
-     * @param $data
+     * @param callable|Closure|null $class
+     * @param mixed ...$arguments
      * @return Chained
+     * @throws Exception
      */
-    function chained($data) {
-        return new Chained($data);
+    function chained($class = null, ...$arguments): Chained
+    {
+        return new Chained($class, ...$arguments);
     }
 }

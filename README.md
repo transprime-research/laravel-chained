@@ -33,9 +33,8 @@ $value = Str::length($value); //7
 You use:
 
 ```php
-$value = chained('ChainedOnStr')
-    ->on(Str::class)
-    ->to('lower')
+$value = chained(Str::class, )
+    ->to('lower', 'ChainedOnStr')
     ->to('snake')
     ->to('before', '_')
     ->to('length')(); //14
@@ -43,9 +42,8 @@ $value = chained('ChainedOnStr')
 Or Aliased method calls:
 
 ```php
-$value = chained('ChainedOnStr')
-    ->on(Str::class)
-    ->lower()
+$value = chained(Str::class)
+    ->lower('ChainedOnStr')
     ->snake()
     ->before('_')
     ->length()(); //7
@@ -55,12 +53,11 @@ $value = chained('ChainedOnStr')
 ### tap() method
 
 ```php
-$value = chained('ChainedOnStr')
-    ->on(Str::class)
+$value = chained(Str::class)
+    ->to('lower', 'ChainedOnStr')
     ->tap(function ($res) {
         var_dump($res);
     })
-    ->to('lower')
     ->to('snake')
     ->to('length')
     ->up(); //Up is used instead of ()
@@ -73,22 +70,24 @@ $value = chained('ChainedOnStr')
 ```php
 use Transprime\Chained\Chained;
 
-$value = chained('ChainedOnStr')
-    ->on(Str::class, function (Chained $chain) {
+$value = chained(DB::class)->to('resolveDb', 'ChainedOnStr')
+    ->chain(Str::class, function (Chained $chain) {
 
         return $chain->to('lower')->to('snake');
 
-    })->on(Arr::class, function (Chained $chain) {
+    })
+    ->chain(Arr::class, function (Chained $chain) {
 
         return $chain->to('wrap')->to('add', 1, 'using_add');
     })();
     
 //Or
 
-chained('ChainedOnStr')
-    ->on(Str::class) // next calls use `Str` class
+chained(DB::class)
+    ->to('resolveDb', 'ChainedOnStr')
+    ->chain(Str::class) // next calls use `Str` class
     ->to('lower')->to('snake')
-    ->on(Arr::class) // next calls use `Arr` class
+    ->chain(Arr::class) // next calls use `Arr` class
     ->to('wrap')->to('add', 1, 'using_add')();
 ```
 
@@ -96,7 +95,7 @@ chained('ChainedOnStr')
 
 ## Additional Information
 
-Be aware that this package is part of a series of "The Proof of Concept".
+This package is part of a series of "Code Dare".
 
 See other packages in this series here:
 

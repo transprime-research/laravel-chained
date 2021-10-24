@@ -9,17 +9,16 @@ class ChainedTest extends TestCase
 {
     public function testChainedIsCreated()
     {
-        $this->assertIsObject(new Chained([]));
+        $this->assertIsObject(new Chained(Arrayer::class, []));
     }
 
     public function testChainedHappyPath()
     {
-        $chained = new Chained('a,b,c,d');
+        $chained = new Chained(Stringer::class);
 
         $this->assertEquals(
             ['a', 'b', 'c', 'd'],
-            $chained->on(Stringer::class)
-                ->to('wrap')
+            $chained->to('wrap', 'a,b,c,d')
                 ->to('combine')
                 ->to('split')
                 ->up()
@@ -30,9 +29,20 @@ class ChainedTest extends TestCase
     {
         $this->assertEquals(
             ['a', 'b', 'c', 'd'],
-            chained('a,b,c,d')
-                ->on(Stringer::class)
-                ->to('wrap')
+            chained(Stringer::class)
+                ->to('wrap', 'a,b,c,d')
+                ->to('combine')
+                ->to('split')
+                ->up()
+        );
+    }
+
+    public function testChainedWithOnMethod()
+    {
+        $this->assertEquals(
+            ['a', 'b', 'c', 'd'],
+            Chained::on(Stringer::class)
+                ->to('wrap', 'a,b,c,d')
                 ->to('combine')
                 ->to('split')
                 ->up()
@@ -43,12 +53,8 @@ class ChainedTest extends TestCase
     {
         $this->assertEquals(
             ['a', 'b', 'c', 'd'],
-            chained('a,b,c,d')
-                ->on(Stringer::class)
-                ->wrap()
-                ->combine()
-                ->split()
-                ->up()
+            chained(Stringer::class)
+                ->wrap('a,b,c,d')->combine()->split()()
         );
     }
 
@@ -56,12 +62,8 @@ class ChainedTest extends TestCase
     {
         $this->assertEquals(
             'a|b|c|d',
-            chained('a,b,c,d')
-                ->on(Stringer::class)
-                ->tap(function ($res) {
-                    $this->assertEquals('a,b,c,d', $res);
-                })
-                ->to('split')
+            chained(Stringer::class)
+                ->to('split', 'a,b,c,d')
                 ->tap(function ($res) {
                     $this->assertEquals(['a','b','c','d'], $res);
                 })
@@ -71,9 +73,8 @@ class ChainedTest extends TestCase
 
         $this->assertEquals(
             'a|b|c|d',
-            chained('a,b,c,d')
-                ->on(Stringer::class)
-                ->split()
+            chained(Stringer::class)
+                ->split('a,b,c,d')
                 ->combine('|')
                 ->up()
         );
@@ -83,9 +84,8 @@ class ChainedTest extends TestCase
     {
         $this->assertEquals(
             ['a', 'b', 'c', 'd'],
-            chained('a,b,c,d')
-                ->on(Stringer::class)
-                ->to('wrap')
+            chained(Stringer::class)
+                ->to('wrap', 'a,b,c,d')
                 ->to('combine')
                 ->to('split')()
         );
@@ -93,12 +93,20 @@ class ChainedTest extends TestCase
 
     public function testChainLikePiper()
     {
-
         $this->assertEquals(
             'bcd',
-            chained(['a', 'b', 'c', 'd'])
-                ->to('array_slice', 1)
+            chained()
+                ->to('array_slice', ['a', 'b', 'c', 'd'], 1)
                 ->to('implode')()
+        );
+    }
+
+    public function testChainWithArguments()
+    {
+        $this->assertEquals(
+            [0, 1],
+            chained(Arrayer::class, ['a', 'b'])
+                ->to('keys')()
         );
     }
 }
@@ -118,5 +126,31 @@ class Stringer
     public function wrap($value)
     {
         return is_array($value) ? $value : [$value];
+    }
+}
+
+class Arrayer
+{
+    /**
+     * @var array
+     */
+    private $items;
+
+    public function __construct($items = [])
+    {
+        $this->items = $items;
+    }
+
+    /**
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function keys()
+    {
+        return array_keys($this->items);
     }
 }
